@@ -1,12 +1,15 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useState } from "react"
-import { Zap, Trophy, Calendar } from "lucide-react"
+import { Zap, Trophy, Calendar, ChevronDown } from "lucide-react"
 
 export default function AGENSIS2025() {
   const [showCursor, setShowCursor] = useState(true)
   const [matrixChars, setMatrixChars] = useState<string[]>([])
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({})
+  const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null)
+  const [selectedFaqCategory, setSelectedFaqCategory] = useState<string>("all")
 
   const copyToClipboard = async (text: string, key: string) => {
     try {
@@ -48,21 +51,73 @@ export default function AGENSIS2025() {
   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝╚══════╝
   `
 
+  const faqCategories = [
+    { value: "all", label: "All Questions" },
+    { value: "general", label: "General" },
+    { value: "technical", label: "Technical" },
+    { value: "logistics", label: "Logistics" },
+  ]
+
+  const faqs = [
+    {
+      category: "general",
+      question: "What is the team size for the hackathon?",
+      answer: "Teams can consist of 2-4 members. Each team member must register separately on the form.",
+    },
+    {
+      category: "general",
+      question: "What are the judging criteria?",
+      answer:
+        "Projects will be evaluated on innovation, technical implementation, use of Agentic AI concepts, and presentation quality.",
+    },
+
+    {
+      category: "technical",
+      question: "Do I need prior AI knowledge?",
+      answer:
+        "No prior experience is required. The workshop on Day 1 will cover all fundamentals. However, basic programming knowledge is recommended.",
+    },
+    {
+      category: "logistics",
+      question: "What is the registration fee?",
+      answer: "The registration fee is ₹200 per team. Payment details will be shared upon registration.",
+    },
+    {
+      category: "logistics",
+      question: "When will the problem statement be revealed?",
+      answer:
+        "The problem statement will be announced immediately after the workshop concludes on Day 1 (18th January).",
+    },
+  ]
+
+  const filteredFaqs = selectedFaqCategory === "all" ? faqs : faqs.filter((f) => f.category === selectedFaqCategory)
+
   return (
     <div className="min-h-screen bg-black text-white font-mono overflow-hidden relative">
       {/* Navigation */}
       <nav className="border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm p-4 relative z-10 sticky top-0">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 bg-red-500 hover:bg-red-400 transition-colors cursor-pointer"></div>
-                <div className="w-3 h-3 bg-yellow-500 hover:bg-yellow-400 transition-colors cursor-pointer"></div>
-                <div className="w-3 h-3 bg-green-500 hover:bg-green-400 transition-colors cursor-pointer"></div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold text-lg">AGENSIS</span>
-                <span className="text-gray-400 text-sm">2025</span>
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-6">
+              {/* GenAI BMSIT Logo */}
+              <Image src="/logos/genai-bmsit.png" alt="GenAI BMSIT" width={200} height={80} className="h-20 w-auto" />
+
+              {/* BMS Institute Logo */}
+              <Image
+                src="/logos/bms-logo.png"
+                alt="BMS Institute of Technology & Management"
+                width={100}
+                height={100}
+                className="h-20 w-auto"
+              />
+
+              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-700">
+                <div className="flex gap-2">
+                  <div className="w-4 h-4 bg-red-500 rounded"></div>
+                  <div className="w-4 h-4 bg-yellow-400 rounded"></div>
+                  <div className="w-4 h-4 bg-green-500 rounded"></div>
+                </div>
+                <span className="text-white font-bold text-lg">AGENSIS 2025</span>
               </div>
             </div>
 
@@ -143,7 +198,7 @@ export default function AGENSIS2025() {
               <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Hackathon</span>
             </h1>
 
-            <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto mb-4">18 & 19 January 2025</p>
+            <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto mb-4">18 &amp; 19 December 2025</p>
 
             <p className="text-base text-gray-400 leading-relaxed max-w-3xl mx-auto mb-8">
               Join the Gen AI Club for an immersive two-day event exploring cutting-edge Agentic AI technologies,
@@ -208,15 +263,15 @@ export default function AGENSIS2025() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Day 1 */}
-            <div className="bg-gray-950 border border-gray-800 p-8 hover:border-gray-600 transition-colors">
-              <div className="flex items-center gap-3 mb-6">
-                <Calendar className="w-6 h-6 text-white" />
-                <h3 className="text-2xl font-bold">Day 1</h3>
+            <div className="border p-8 hover:border-gray-400 transition-colors bg-foreground border-amber-600 rounded-3xl">
+              <div className="flex items-center gap-4 mb-6">
+                <Calendar className="w-8 h-8 text-cyan-400" />
+                <h3 className="text-2xl font-bold text-cyan-400">Day 1</h3>
               </div>
-              <p className="text-gray-400 mb-4">18th January 2025</p>
-              <div className="bg-black p-4 border border-gray-800">
-                <p className="text-white font-semibold mb-2">Agentic AI Workshop</p>
-                <ul className="text-gray-400 text-sm space-y-2">
+              <p className="text-gray-300 mb-4 font-mono">18th December 2024</p>
+              <div className="p-4 border bg-card-foreground border-amber-500 rounded-3xl">
+                <p className="text-cyan-400 font-semibold mb-2">Agentic AI Workshop</p>
+                <ul className="text-gray-300 text-sm space-y-2 font-mono">
                   <li>• Fundamentals of Agentic AI</li>
                   <li>• AI Workflows & Automation</li>
                   <li>• Tools & Technologies</li>
@@ -226,15 +281,15 @@ export default function AGENSIS2025() {
             </div>
 
             {/* Day 2 */}
-            <div className="bg-gray-950 border border-gray-800 p-8 hover:border-gray-600 transition-colors">
-              <div className="flex items-center gap-3 mb-6">
-                <Trophy className="w-6 h-6 text-white" />
-                <h3 className="text-2xl font-bold">Day 2</h3>
+            <div className="border p-8 hover:border-gray-400 transition-colors bg-card-foreground border-amber-600 rounded-3xl">
+              <div className="flex items-center gap-4 mb-6">
+                <Trophy className="w-8 h-8 text-cyan-400" />
+                <h3 className="text-2xl font-bold text-cyan-400">Day 2</h3>
               </div>
-              <p className="text-gray-400 mb-4">19th January 2025</p>
-              <div className="bg-black p-4 border border-gray-800">
-                <p className="text-white font-semibold mb-2">A.G.E.N.E.S.I.S Hackathon</p>
-                <ul className="text-gray-400 text-sm space-y-2">
+              <p className="text-gray-300 mb-4 font-mono">19th December 2024</p>
+              <div className="p-4 border bg-card-foreground border-amber-600 rounded-3xl">
+                <p className="text-cyan-400 font-semibold mb-2">A.G.E.N.E.S.I.S Hackathon</p>
+                <ul className="text-gray-300 text-sm space-y-2 font-mono">
                   <li>• Problem Statement Release</li>
                   <li>• Team-based Competition</li>
                   <li>• 24-Hour Build Sprint</li>
@@ -255,25 +310,25 @@ export default function AGENSIS2025() {
 
           <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6">
             {/* Registration Fee */}
-            <div className="bg-gray-950 border border-gray-800 p-6">
+            <div className="bg-gray-950 border p-6 rounded-lg border-amber-600">
               <div className="text-4xl font-bold text-white mb-2">₹200</div>
               <p className="text-gray-400">Per Team</p>
             </div>
 
             {/* Team Limit */}
-            <div className="bg-gray-950 border border-gray-800 p-6">
+            <div className="bg-gray-950 border p-6 rounded-xl border-amber-600">
               <div className="text-4xl font-bold text-white mb-2">50</div>
               <p className="text-gray-400">Teams Maximum</p>
             </div>
 
             {/* Eligibility */}
-            <div className="bg-gray-950 border border-gray-800 p-6">
+            <div className="bg-gray-950 border p-6 rounded-xl border-amber-600">
               <div className="text-xl font-bold text-white mb-2">Open to All</div>
               <p className="text-gray-400">No Restrictions</p>
             </div>
           </div>
 
-          <div className="max-w-4xl mx-auto mt-12 bg-gray-950 border border-gray-800 p-8">
+          <div className="max-w-4xl mx-auto mt-12 bg-gray-950 border p-8 rounded-md border-amber-600">
             <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
               <Zap className="w-6 h-6" />
               Key Details
@@ -300,33 +355,43 @@ export default function AGENSIS2025() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Prizes & Recognition</h2>
+            <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 inline-block">
+              <p className="text-gray-400 text-sm mb-1">Total Prize Pool</p>
+              <p className="text-4xl font-bold text-white">₹10,000</p>
+            </div>
           </div>
 
-          <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
             {/* 1st Place */}
-            <div className="relative">
-              <div className="bg-gradient-to-b from-yellow-500/20 to-gray-950 border border-yellow-600/50 p-8 text-center">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+              <div className="relative bg-gradient-to-b from-yellow-500/10 to-gray-950 border border-yellow-600/50 p-8 text-center rounded-lg hover:border-yellow-500/80 transition-all duration-300 transform group-hover:scale-105">
                 <div className="text-6xl font-bold text-yellow-400 mb-4">🥇</div>
                 <h3 className="text-2xl font-bold mb-2">1st Place</h3>
-                <p className="text-gray-400 text-sm">Cash Prize + Certificate</p>
+                <p className="text-3xl font-bold text-yellow-400 mb-3">₹5,000</p>
+                <p className="text-gray-400 text-sm">Cash Prize + Certificate + Recognition</p>
               </div>
             </div>
 
             {/* 2nd Place */}
-            <div>
-              <div className="bg-gradient-to-b from-gray-500/20 to-gray-950 border border-gray-600/50 p-8 text-center">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-gray-400/20 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+              <div className="relative bg-gradient-to-b from-gray-500/10 to-gray-950 border border-gray-600/50 p-8 text-center rounded-lg hover:border-gray-400/80 transition-all duration-300 transform group-hover:scale-105">
                 <div className="text-6xl font-bold text-gray-300 mb-4">🥈</div>
                 <h3 className="text-2xl font-bold mb-2">2nd Place</h3>
-                <p className="text-gray-400 text-sm">Cash Prize + Certificate</p>
+                <p className="text-3xl font-bold text-gray-300 mb-3">₹3,000</p>
+                <p className="text-gray-400 text-sm">Cash Prize + Certificate + Recognition</p>
               </div>
             </div>
 
             {/* 3rd Place */}
-            <div>
-              <div className="bg-gradient-to-b from-orange-500/20 to-gray-950 border border-orange-600/50 p-8 text-center">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+              <div className="relative bg-gradient-to-b from-orange-500/10 to-gray-950 border border-orange-600/50 p-8 text-center rounded-lg hover:border-orange-500/80 transition-all duration-300 transform group-hover:scale-105">
                 <div className="text-6xl font-bold text-orange-400 mb-4">🥉</div>
                 <h3 className="text-2xl font-bold mb-2">3rd Place</h3>
-                <p className="text-gray-400 text-sm">Cash Prize + Certificate</p>
+                <p className="text-3xl font-bold text-orange-400 mb-3">₹2,000</p>
+                <p className="text-gray-400 text-sm">Cash Prize + Certificate + Recognition</p>
               </div>
             </div>
           </div>
@@ -337,54 +402,28 @@ export default function AGENSIS2025() {
       <section className="px-6 py-16 lg:px-12 border-t border-gray-800" id="faq">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-8">Frequently Asked Questions</h2>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-gray-950 border border-gray-800 p-6">
-              <h3 className="text-lg font-semibold mb-2 text-white">What is the team size for the hackathon?</h3>
-              <p className="text-gray-400">
-                Teams can consist of 2-4 members. Each team member must register separately on the form.
-              </p>
-            </div>
-
-            <div className="bg-gray-950 border border-gray-800 p-6">
-              <h3 className="text-lg font-semibold mb-2 text-white">What is the registration fee?</h3>
-              <p className="text-gray-400">
-                The registration fee is ₹200 per team. Payment details will be shared upon registration.
-              </p>
-            </div>
-
-            <div className="bg-gray-950 border border-gray-800 p-6">
-              <h3 className="text-lg font-semibold mb-2 text-white">When will the problem statement be revealed?</h3>
-              <p className="text-gray-400">
-                The problem statement will be announced immediately after the workshop concludes on Day 1 (18th
-                January).
-              </p>
-            </div>
-
-            <div className="bg-gray-950 border border-gray-800 p-6">
-              <h3 className="text-lg font-semibold mb-2 text-white">Do I need prior AI knowledge?</h3>
-              <p className="text-gray-400">
-                No prior experience is required. The workshop on Day 1 will cover all fundamentals. However, basic
-                programming knowledge is recommended.
-              </p>
-            </div>
-
-            <div className="bg-gray-950 border border-gray-800 p-6">
-              <h3 className="text-lg font-semibold mb-2 text-white">What are the judging criteria?</h3>
-              <p className="text-gray-400">
-                Projects will be evaluated on innovation, technical implementation, use of Agentic AI concepts, and
-                presentation quality.
-              </p>
-            </div>
-
-            <div className="bg-gray-950 border border-gray-800 p-6">
-              <h3 className="text-lg font-semibold mb-2 text-white">Is this event open to non-BMSITM students?</h3>
-              <p className="text-gray-400">
-                Yes! The event is open to all students and professionals. Everyone is welcome to participate.
-              </p>
-            </div>
+          <div className="space-y-0">
+            {faqs.map((faq, index) => (
+              <div key={index}>
+                <button
+                  onClick={() => setExpandedFaqIndex(expandedFaqIndex === index ? null : index)}
+                  className="w-full flex items-center justify-between px-6 py-6 text-left hover:bg-gray-950/50 transition-colors border-b border-gray-800 last:border-b-0"
+                >
+                  <h3 className="text-lg font-bold text-white flex-1 text-pretty">{faq.question}</h3>
+                  <ChevronDown
+                    className={`w-6 h-6 text-red-500 flex-shrink-0 ml-4 transition-transform duration-300 ${
+                      expandedFaqIndex === index ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {expandedFaqIndex === index && (
+                  <div className="px-6 py-4 bg-gray-950/30 border-b border-gray-800 text-gray-300">{faq.answer}</div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
